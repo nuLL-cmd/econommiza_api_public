@@ -14,8 +14,10 @@ public class NegocioException extends RuntimeException{
     
     private HttpStatus status;
 
-    public NegocioException(String mensagem){
-        super(mensagem);
+    public NegocioException(String mensagem, HttpStatus status){
+       super(mensagem);
+       this.status = status;
+    
     }
 
     public HttpStatus getStatus(){
