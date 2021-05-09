@@ -59,6 +59,11 @@ public class Usuario implements Serializable{
     @Size(min = 3, max = 100, message = "Campo nomo deve contar entre 3 e 100 caracteres")
     private String nome;
 
+    
+    @NotBlank(message = "Campo nome não pode ser vazio.")
+    @Size(min = 3, max = 100, message = "Campo nomo deve contar entre 3 e 100 caracteres")
+    private String sobrenome;
+
     @Email(message = "Insira um email valido")
     @Size(max = 100, message = "Email pode conter no maximo 100 caracteres.")
     @NotBlank(message = "Deve ser informado um email no cadastro.")

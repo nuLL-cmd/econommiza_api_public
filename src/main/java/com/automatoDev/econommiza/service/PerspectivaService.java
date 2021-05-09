@@ -2,6 +2,8 @@ package com.automatoDev.econommiza.service;
 
 import java.util.List;
 
+import com.automatoDev.econommiza.adapter.PerspectivaDTOAdapter;
+import com.automatoDev.econommiza.dto.PerspectivaDTO;
 import com.automatoDev.econommiza.entity.Perspectiva;
 import com.automatoDev.econommiza.entity.Usuario;
 import com.automatoDev.econommiza.exception.NegocioException;
@@ -29,22 +31,26 @@ public class PerspectivaService {
 
 
 
-    public List<Perspectiva> fetchAll(){
-        return perspectivaRepo.findAll();
+    public List<PerspectivaDTO> fetchAll(){
+        return new PerspectivaDTOAdapter(perspectivaRepo.findAll()).getPerspectivaListDTO();
 
     }
 
-    public Perspectiva fetchById(Long id){
-        if(id > 0)
-            return perspectivaRepo.findById(id).orElse(null);
+    public PerspectivaDTO fetchById(Long id){
+        if(id > 0){
+            Perspectiva perspectiva = perspectivaRepo.findById(id).orElse(null);
+            PerspectivaDTO dto = new PerspectivaDTOAdapter(perspectiva).getPerspectivaDTO();
+            return dto;
+
+        }
         
         throw new NegocioException("Deve ser informado um id válido.", HttpStatus.BAD_REQUEST);
 
     }
 
-    public List<Perspectiva> fetchPorUsuarioId(Long id){
-        if(id >= 0){
-            return perspectivaRepo.findByUsuario_idUsuario(id);
+    public List<PerspectivaDTO> fetchPorUsuarioId(Long id){
+        if(id > 0){
+            return new PerspectivaDTOAdapter(perspectivaRepo.findByUsuario_idUsuario(id)).getPerspectivaListDTO();
         }
 
         throw new NegocioException("Deve ser informado um id válido.",HttpStatus.BAD_REQUEST);
@@ -60,7 +66,7 @@ public class PerspectivaService {
     }
 
     public void deletePerspectiva(Long id){
-        if(id >= 0){
+        if(id > 0){
             if(perspectivaRepo.existsById(id))
                 perspectivaRepo.deleteById(id);
 
@@ -70,30 +76,34 @@ public class PerspectivaService {
         throw new NegocioException("Deve ser informado um id válido",HttpStatus.BAD_REQUEST);
     }
 
-    public Perspectiva postPerspectiva(Perspectiva perspectiva){
+    public PerspectivaDTO postPerspectiva(Perspectiva perspectiva){
         Usuario usuario = usuarioRepo.findById(perspectiva.getUsuario().getIdUsuario()).orElseThrow(() ->
         new NegocioException("Usuario não encontrado na base de dados.", HttpStatus.NOT_FOUND));;
 
         
         perspectiva.setUsuario(usuario);
+        Perspectiva perspectivaSave = perspectivaRepo.save(perspectiva);
 
-        return perspectivaRepo.save(perspectiva);
+        return new  PerspectivaDTOAdapter(perspectivaSave).getPerspectivaDTO();
+        
     }
+     
 
-    public Perspectiva putPerspectiva(Perspectiva perspectiva){
+    public PerspectivaDTO putPerspectiva(Perspectiva perspectiva){
 
-        if(perspectiva.getIdPerspectiva() != null || perspectiva.getIdPerspectiva() >= 0){
+        if(perspectiva.getIdPerspectiva() != null || perspectiva.getIdPerspectiva() > 0){
 
             if(perspectivaRepo.existsById(perspectiva.getIdPerspectiva())){
                 Usuario usuario = usuarioRepo.findById(perspectiva.getUsuario().getIdUsuario()).orElseThrow(() ->
                 new NegocioException("Usuario não encontrado na base de dados.", HttpStatus.NOT_FOUND));;
 
                 perspectiva.setUsuario(usuario);
+                Perspectiva perspectivaSave = perspectivaRepo.save(perspectiva);
 
-                return perspectivaRepo.save(perspectiva);
+                return new  PerspectivaDTOAdapter(perspectivaSave).getPerspectivaDTO();
             }
 
-           throw new NegocioException("Usuario não encontrado na base de dados.", HttpStatus.NOT_FOUND);
+           throw new NegocioException("A perspectiva informada não foi encontrada na base de dados.", HttpStatus.NOT_FOUND);
         }
 
         throw new NegocioException("Deve ser informado um id válido",HttpStatus.BAD_REQUEST);

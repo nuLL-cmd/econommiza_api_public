@@ -3,6 +3,8 @@ package com.automatoDev.econommiza.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.automatoDev.econommiza.adapter.UsuarioDTOAdapter;
+import com.automatoDev.econommiza.dto.UsuarioPerfilDTO;
 import com.automatoDev.econommiza.entity.Perfil;
 import com.automatoDev.econommiza.entity.Usuario;
 import com.automatoDev.econommiza.enumerator.PerfilEnum;
@@ -32,27 +34,27 @@ public class UsuarioService {
 
 
 
-    public List<Usuario> fetchAll(){
-        return usuarioRepo.findAll();
+    public List<UsuarioPerfilDTO> fetchAll(){
+        return new UsuarioDTOAdapter(usuarioRepo.findAll()).getUsuarioPerfilListDTO();
     }
 
-    public Usuario fetchById(Long id){
+    public UsuarioPerfilDTO fetchById(Long id){
 
         if(id >= 0)
-            return usuarioRepo.findById(id).orElse(null);
+            return new UsuarioDTOAdapter(usuarioRepo.findById(id).orElse(null)).getUsuarioPerfilDTO();
 
         throw new NegocioException("Id informado é inválido.", HttpStatus.BAD_REQUEST);
     }
 
-    public Usuario fetchByUid(String uid){
+    public List<UsuarioPerfilDTO> fetchByUid(String uid){
         if(!uid.isEmpty()){
-            return usuarioRepo.findByUid(uid.trim());
+            return new UsuarioDTOAdapter(usuarioRepo.findByUid(uid.trim())).getUsuarioPerfilListDTO();
         }
 
         throw new NegocioException("UID informado é inválido.", HttpStatus.BAD_REQUEST);
     }
 
-    public Usuario postUsuario(Usuario usuario){
+    public UsuarioPerfilDTO postUsuario(Usuario usuario){
         
         List<Perfil> perfis = new ArrayList<>();
         if(usuario.getPerfis().size() != 0){
@@ -87,7 +89,9 @@ public class UsuarioService {
         }
      
         usuario.setNome(usuario.getNome().toUpperCase());
-        return usuarioRepo.save(usuario);
+        usuario.setSobrenome(usuario.getSobrenome().toUpperCase());
+         return new  UsuarioDTOAdapter(usuarioRepo.save(usuario)).getUsuarioPerfilDTO();
+       
     }
 
 
@@ -95,6 +99,8 @@ public class UsuarioService {
 
         if(usuario.getIdUsuario() != null || usuario.getIdUsuario() >= 0 ){
             if(usuarioRepo.existsById(usuario.getIdUsuario())){
+                usuario.setNome(usuario.getNome().toUpperCase());
+                usuario.setSobrenome(usuario.getSobrenome().toUpperCase());
                 return usuarioRepo.save(usuario);
             }
 

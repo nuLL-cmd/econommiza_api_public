@@ -2,6 +2,7 @@ package com.automatoDev.econommiza.resource;
 
 import javax.validation.Valid;
 
+import com.automatoDev.econommiza.dto.PerspectivaDTO;
 import com.automatoDev.econommiza.entity.Perspectiva;
 import com.automatoDev.econommiza.service.PerspectivaService;
 
@@ -52,9 +53,9 @@ public class PerspectivaResource {
         return ResponseEntity.ok(perspectivaService.fetchById(id));
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePerspectiva(Long id){
+    public void deletePerspectiva(@PathVariable("id") Long id){
         perspectivaService.deletePerspectiva(id);
     }
 
@@ -65,7 +66,7 @@ public class PerspectivaResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Perspectiva postPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
+    public PerspectivaDTO postPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
         return perspectivaService.postPerspectiva(perspectiva);
     }
     

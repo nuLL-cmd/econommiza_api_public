@@ -2,6 +2,7 @@ package com.automatoDev.econommiza.resource;
 
 import javax.validation.Valid;
 
+import com.automatoDev.econommiza.dto.UsuarioPerfilDTO;
 import com.automatoDev.econommiza.entity.Usuario;
 import com.automatoDev.econommiza.service.UsuarioService;
 
@@ -51,7 +52,7 @@ public class UsuarioResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario postUsuario(@Valid @RequestBody Usuario usuario){
+    public UsuarioPerfilDTO postUsuario(@Valid @RequestBody Usuario usuario){
         return usuarioService.postUsuario(usuario);
     }
 

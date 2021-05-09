@@ -5,6 +5,12 @@ import java.util.List;
 import com.automatoDev.econommiza.exception.model.CamposErro;
 import com.automatoDev.econommiza.exception.model.Erro;
 
+/**
+ * @author Marco Aurélio.
+ * @date 07/05/2021
+ * 
+ * Classe que segue o padrão Builder para a entidade Erro.
+ */
 public class ErroBuilder {
 
     private Integer status;
@@ -15,7 +21,7 @@ public class ErroBuilder {
     private String campo;
     
 
-    public Erro builder(){
+    public Erro build(){
         return new Erro(this.status,this.message,this.timestamp,this.campos, this.campo);
     }
 

@@ -36,7 +36,7 @@ public class ManipulaException extends ResponseEntityExceptionHandler{
         Erro erro = new ErroBuilder()
             .status(status.value())
             .message(ex.getMessage())
-            .timestamp(OffsetDateTime.now().toEpochSecond()).builder();
+            .timestamp(OffsetDateTime.now().toEpochSecond()).build();
 
         return handleExceptionInternal(ex, erro, new HttpHeaders(), ex.getStatus(), request);
     }
@@ -46,7 +46,7 @@ public class ManipulaException extends ResponseEntityExceptionHandler{
         Erro erro = new ErroBuilder().status(400)
             .message("Atenção para violação de constraint na tabela.")
             .timestamp(OffsetDateTime.now().toEpochSecond())
-            .campo(ex.getConstraintName()).builder();
+            .campo(ex.getConstraintName()).build();
 
             return new ResponseEntity<>(erro, new HttpHeaders(), erro.getStatus());
 
@@ -57,7 +57,7 @@ public class ManipulaException extends ResponseEntityExceptionHandler{
 
         Erro erro = new ErroBuilder().status(400)
             .message(ex.getLocalizedMessage())
-            .timestamp(OffsetDateTime.now().toEpochSecond()).builder();
+            .timestamp(OffsetDateTime.now().toEpochSecond()).build();
 
         return new ResponseEntity<Object>(erro, new HttpHeaders(), erro.getStatus());
 
@@ -76,7 +76,7 @@ public class ManipulaException extends ResponseEntityExceptionHandler{
             Erro erro = new ErroBuilder().status(status.value())
                 .message("Um ou mais campos são inválidos")
                 .timestamp(OffsetDateTime.now().toEpochSecond())
-                .campos(campos).builder();
+                .campos(campos).build();
 
         return super.handleExceptionInternal(ex, erro, headers, status, request);
     }

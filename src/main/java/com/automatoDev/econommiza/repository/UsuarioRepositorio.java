@@ -1,5 +1,7 @@
 package com.automatoDev.econommiza.repository;
 
+import java.util.List;
+
 import com.automatoDev.econommiza.entity.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario,Long>{
     
-    Usuario findByUid(String uid);
+    List<Usuario> findByUid(String uid);
 
 }
