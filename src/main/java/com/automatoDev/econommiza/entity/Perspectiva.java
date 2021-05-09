@@ -21,8 +21,8 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.automatoDev.econommiza.entity.validationGroups.ConverterGroup;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -45,6 +45,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonInclude(value = Include.NON_NULL)
 @EqualsAndHashCode(exclude = {"nome","ano","totalProventos","totalDespesas","usuario"})
 @Entity(name = "tb_perspectiva")
 @Table(schema = "dbo")
@@ -63,12 +64,11 @@ public class Perspectiva implements Serializable {
     @NotNull(message = "A perspectiva pricisa ter um ano.")
     private Integer ano;
 
-    @JsonProperty(access = Access.READ_ONLY)
-    @NumberFormat(style = Style.CURRENCY)
+    @Column(name = "total_proventos")
     private BigDecimal totalProventos = new BigDecimal("0.00");
 
-    @JsonProperty(access = Access.READ_ONLY)
-    @NumberFormat(style = Style.CURRENCY)
+
+    @Column(name = "total_despesas")
     private BigDecimal totalDespesas = new BigDecimal("0.00");
 
 

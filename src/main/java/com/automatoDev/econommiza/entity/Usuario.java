@@ -19,6 +19,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.automatoDev.econommiza.entity.validationGroups.ConverterGroup;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,11 +34,13 @@ import lombok.ToString;
  * @date 01/05/2021
  * Classe de mapeamento para tb_usuario.
  */
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@JsonInclude(value = Include.NON_NULL)
 @EqualsAndHashCode(exclude = {"nome","email","senha"})
 @Entity(name = "tb_usuario")
 @Table(schema = "dbo")
@@ -64,7 +68,10 @@ public class Usuario implements Serializable{
     @Size(min = 6, message = "Senha deve ter no minimo 6 caracteres")
     private String senha;
 
-    @ManyToMany()
+    @NotBlank(message = "Campo uid não pode ser nulo.")
+    private String uid;
+
+    @ManyToMany
     @JoinTable(name = "tb_perfil_usuario",schema = "dbo",
     joinColumns = @JoinColumn(name = "id_usuario"), inverseJoinColumns = @JoinColumn(name = "id_perfil"))
     private List<Perfil> perfis = new ArrayList<>();

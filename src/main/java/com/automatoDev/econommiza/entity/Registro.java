@@ -33,6 +33,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+
+
 /**
  * @author Marco Aurélio
  * @date 01/05/2021
@@ -52,7 +54,7 @@ public class Registro implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "tb_registro")
+    @Column(name = "id_registro")
     private Long idRegistro;
 
     @NotBlank(message = "Necessário informar um nome para o registro.")
