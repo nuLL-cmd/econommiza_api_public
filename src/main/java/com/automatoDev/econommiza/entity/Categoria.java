@@ -41,7 +41,7 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
-    private Long idcategoria;
+    private Long idCategoria;
 
     @Enumerated(EnumType.STRING)
     private CategoriaEnum nome;

@@ -15,16 +15,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
+import com.automatoDev.econommiza.entity.validationGroups.ConverterGroup;
 import com.automatoDev.econommiza.enumerator.TipoRegistroEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
-import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -60,12 +61,10 @@ public class Registro implements Serializable{
     @NotBlank(message = "Necessário informar um nome para o registro.")
     private String nome;
 
-    @JsonProperty(access = Access.READ_ONLY)
     private Long data;
 
-    @NumberFormat(style = Style.CURRENCY)
     @NotNull(message = "Campo valor não pode ser nulo.")
-    private BigDecimal valor;
+    private BigDecimal valor =  new BigDecimal("0.00");
 
     @Enumerated(EnumType.STRING)
     private TipoRegistroEnum tipo;
@@ -75,5 +74,13 @@ public class Registro implements Serializable{
     ,joinColumns = @JoinColumn(name = "id_registro")
     ,inverseJoinColumns = @JoinColumn(name = "id_categoria"))
     private List<Categoria> categorias = new ArrayList<>();
+
+    @ManyToOne()
+    @JoinColumn(name = "id_perspectiva")
+    @JsonIgnoreProperties({"registros","usuario"})
+    @Valid
+    @NotNull(message = "O registro precisa estar vinculado a uma perspectiva.")
+    @ConvertGroup(from = Default.class,to = ConverterGroup.Perspectiva.class)
+    private Perspectiva perspectiva;
     
 }

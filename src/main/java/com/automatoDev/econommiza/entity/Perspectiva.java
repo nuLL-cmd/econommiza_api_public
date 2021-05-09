@@ -51,6 +51,7 @@ public class Perspectiva implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @NotNull(groups = ConverterGroup.Perspectiva.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_perspectiva")
     private Long idPerspectiva;
@@ -77,7 +78,6 @@ public class Perspectiva implements Serializable {
     private Usuario usuario;
     
 
-    @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST})
-    @JoinColumn(name = "id_perspectiva")
+    @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST}, mappedBy = "perspectiva")
     private List<Registro> registros;
 }
