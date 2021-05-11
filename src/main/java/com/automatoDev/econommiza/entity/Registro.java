@@ -65,7 +65,7 @@ public class Registro implements Serializable{
     private Long data;
 
     @NotNull(message = "Campo valor não pode ser nulo.")
-    private BigDecimal valor =  new BigDecimal("0.00");
+    private BigDecimal valor;
 
     @Enumerated(EnumType.STRING)
     private TipoRegistroEnum tipo;

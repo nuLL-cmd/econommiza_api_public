@@ -83,44 +83,51 @@ public class RegistroService {
     public Registro putRegistro(Registro registro){
         
         if(registro.getIdRegistro() > 0){
-            List<Categoria> categorias = new ArrayList<>();
+            if(registro.getTipo() != null){
 
-            Registro registroFind = registroRepo.findById(registro.getIdRegistro()).orElseThrow(() ->
-                new NegocioException("Registor não encontrado na base de dados, não é possível salvar.", HttpStatus.NOT_FOUND));
+                List<Categoria> categorias = new ArrayList<>();
+
+                Registro registroFind = registroRepo.findById(registro.getIdRegistro()).orElseThrow(() ->
+                    new NegocioException("Registor não encontrado na base de dados, não é possível salvar.", HttpStatus.NOT_FOUND));
+                
+                Perspectiva perspectiva = perspectivaRepo.findById(registro.getPerspectiva().getIdPerspectiva()).orElseThrow(() ->
+                    new NegocioException("Perspectiva informada não foi encontrada, não é possível salvar.", HttpStatus.NOT_FOUND));
+
+                if(registroFind.getTipo().equals(TipoRegistroEnum.E))
+                    perspectiva.setTotalProventos(perspectiva.getTotalProventos().subtract(registroFind.getValor()));
+                else
+                    perspectiva.setTotalDespesas(perspectiva.getTotalDespesas().subtract(registroFind.getValor()));
+
+
+
+                if(registro.getTipo().equals(TipoRegistroEnum.E))
+                    perspectiva.setTotalProventos(perspectiva.getTotalProventos().add(registro.getValor()));
+                else
+                    perspectiva.setTotalDespesas(perspectiva.getTotalDespesas().add(registro.getValor()));
+
+                registro.getCategorias().forEach(cat ->{
+                    if(cat.getIdCategoria() > 0){
+
+                        categorias.add(categoriaRepo.findById(cat.getIdCategoria()).orElseThrow(() ->
+                        new NegocioException("Categoria "+cat.getIdCategoria()+ " não encontrada, não é possivel atualizar.", HttpStatus.NOT_FOUND) ));
+
+                        return;
+                    }
+                    throw new NegocioException("Uma das categorias informadas possui um id inválido. Não é possivel atualizar.", HttpStatus.BAD_REQUEST);
             
-            Perspectiva perspectiva = perspectivaRepo.findById(registro.getPerspectiva().getIdPerspectiva()).orElseThrow(() ->
-                new NegocioException("Perspectiva informada não foi encontrada, não é possível salvar.", HttpStatus.NOT_FOUND));
+                });
 
-            if(registroFind.getTipo().equals(TipoRegistroEnum.E))
-                perspectiva.setTotalProventos(perspectiva.getTotalProventos().subtract(registroFind.getValor()));
-            else
-                perspectiva.setTotalDespesas(perspectiva.getTotalDespesas().subtract(registroFind.getValor()));
+                registro.setPerspectiva(perspectiva);
+                
+                registro.setCategorias(categorias);
 
+                perspectivaRepo.save(perspectiva);
 
+                return registroRepo.save(registro);
+            }
+            
+            throw new NegocioException("O tipo de registro não foi definido, não é possivel atualizar.", HttpStatus.BAD_REQUEST);
 
-            if(registro.getTipo().equals(TipoRegistroEnum.E))
-                 perspectiva.setTotalProventos(perspectiva.getTotalProventos().add(registro.getValor()));
-            else
-                perspectiva.setTotalDespesas(perspectiva.getTotalDespesas().add(registro.getValor()));
-
-            registro.getCategorias().forEach(cat ->{
-                if(cat.getIdCategoria() > 0){
-
-                    categorias.add(categoriaRepo.findById(cat.getIdCategoria()).orElseThrow(() ->
-                    new NegocioException("Categoria "+cat.getIdCategoria()+ " não encontrada, não é possivel salvar.", HttpStatus.NOT_FOUND) ));
-
-                    return;
-                }
-                throw new NegocioException("Uma das categorias informadas possui um id inválido. Não é possivel salvar.", HttpStatus.BAD_REQUEST);
-        
-            });
-
-            registro.setPerspectiva(perspectiva);
-            registro.setCategorias(categorias);
-
-            perspectivaRepo.save(perspectiva);
-
-            return registroRepo.save(registro);
             
         }
 
