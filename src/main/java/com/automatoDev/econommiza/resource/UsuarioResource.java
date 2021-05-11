@@ -35,35 +35,35 @@ public class UsuarioResource {
 
 
     @GetMapping
-    public ResponseEntity<?> fetchAll(){
+    private ResponseEntity<?> fetchAll(){
         
         return ResponseEntity.ok(usuarioService.fetchAll());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> fetchById(@PathVariable("id") Long id){
+    private ResponseEntity<?> fetchById(@PathVariable("id") Long id){
         return ResponseEntity.ok(usuarioService.fetchById(id));
     }
     @GetMapping("{uid}/uid")
-    public ResponseEntity<?> fetchByUid(@PathVariable("uid") String uid){
+    private ResponseEntity<?> fetchByUid(@PathVariable("uid") String uid){
         return ResponseEntity.ok(usuarioService.fetchByUid(uid));
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioPerfilDTO postUsuario(@Valid @RequestBody Usuario usuario){
+    private UsuarioPerfilDTO postUsuario(@Valid @RequestBody Usuario usuario){
         return usuarioService.postUsuario(usuario);
     }
 
     @PutMapping
-    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario){
+    private ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario){
         return ResponseEntity.ok(usuarioService.putUsuario(usuario));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUsuario(@PathVariable("id") Long id){
+    private void deleteUsuario(@PathVariable("id") Long id){
         usuarioService.deleteUsuario(id);
     }
 

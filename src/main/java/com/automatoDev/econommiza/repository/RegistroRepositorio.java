@@ -1,6 +1,5 @@
 package com.automatoDev.econommiza.repository;
 
-import com.automatoDev.econommiza.entity.Perspectiva;
 import com.automatoDev.econommiza.entity.Registro;
 
 import org.springframework.data.jpa.repository.JpaRepository;

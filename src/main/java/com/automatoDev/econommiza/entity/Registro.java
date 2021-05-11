@@ -61,6 +61,7 @@ public class Registro implements Serializable{
     @NotBlank(message = "Necessário informar um nome para o registro.")
     private String nome;
 
+    @NotNull(message = "Campo data não pode ser nulo.")
     private Long data;
 
     @NotNull(message = "Campo valor não pode ser nulo.")
@@ -69,12 +70,6 @@ public class Registro implements Serializable{
     @Enumerated(EnumType.STRING)
     private TipoRegistroEnum tipo;
 
-    @ManyToMany()
-    @JoinTable(name = "tb_categoria_registro", schema = "dbo"
-    ,joinColumns = @JoinColumn(name = "id_registro")
-    ,inverseJoinColumns = @JoinColumn(name = "id_categoria"))
-    private List<Categoria> categorias = new ArrayList<>();
-
     @ManyToOne()
     @JoinColumn(name = "id_perspectiva")
     @JsonIgnoreProperties({"registros","usuario"})
@@ -82,5 +77,15 @@ public class Registro implements Serializable{
     @NotNull(message = "O registro precisa estar vinculado a uma perspectiva.")
     @ConvertGroup(from = Default.class,to = ConverterGroup.Perspectiva.class)
     private Perspectiva perspectiva;
+
+    @ManyToMany()
+    @JoinTable(name = "tb_categoria_registro", schema = "dbo"
+    ,joinColumns = @JoinColumn(name = "id_registro")
+    ,inverseJoinColumns = @JoinColumn(name = "id_categoria"))
+    @Valid
+    @ConvertGroup(from = Default.class, to = ConverterGroup.Categoria.class)
+    private List<Categoria> categorias = new ArrayList<>();
+
+
     
 }

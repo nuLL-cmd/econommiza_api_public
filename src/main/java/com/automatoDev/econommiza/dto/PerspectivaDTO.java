@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.automatoDev.econommiza.entity.Registro;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -32,5 +33,6 @@ public class PerspectivaDTO {
     private BigDecimal totalProventos  = new BigDecimal("0.00");
     private BigDecimal totalDespesas = new BigDecimal("0.00");
     private UsuarioDTO usuario;
+    @JsonIgnoreProperties({"categorias","perspectiva"})
     private List<Registro> registros;
 }

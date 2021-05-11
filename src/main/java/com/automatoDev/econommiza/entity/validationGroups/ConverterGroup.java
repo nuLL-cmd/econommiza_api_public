@@ -4,4 +4,5 @@ public interface ConverterGroup {
     
     public interface Usuario{}
     public interface Perspectiva{}
+    public interface Categoria{}
 }

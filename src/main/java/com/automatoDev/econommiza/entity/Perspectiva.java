@@ -76,7 +76,6 @@ public class Perspectiva implements Serializable {
     @Valid
     @ConvertGroup(from = Default.class, to = ConverterGroup.Usuario.class)
     private Usuario usuario;
-    
 
     @OneToMany(cascade = {CascadeType.REMOVE,CascadeType.PERSIST}, mappedBy = "perspectiva")
     private List<Registro> registros;

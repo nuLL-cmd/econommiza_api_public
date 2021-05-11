@@ -34,7 +34,7 @@ public class PerspectivaResource {
 
 
     @GetMapping("admin/todos")
-    public ResponseEntity<?> fetchAll(){
+    private ResponseEntity<?> fetchAll(){
         return ResponseEntity.ok(perspectivaService.fetchAll());
     }
 
@@ -44,29 +44,29 @@ public class PerspectivaResource {
     }
 
     @GetMapping("{uid}/user/uid")
-    public ResponseEntity<?> fetchPorUsuarioUid(@PathVariable("uid") String uid){
+    private ResponseEntity<?> fetchPorUsuarioUid(@PathVariable("uid") String uid){
         return ResponseEntity.ok(perspectivaService.fetchPorUsuarioUid(uid));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> fetchById(@PathVariable("id") Long id){
+    private ResponseEntity<?> fetchById(@PathVariable("id") Long id){
         return ResponseEntity.ok(perspectivaService.fetchById(id));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePerspectiva(@PathVariable("id") Long id){
+    private void deletePerspectiva(@PathVariable("id") Long id){
         perspectivaService.deletePerspectiva(id);
     }
 
     @PutMapping
-    public ResponseEntity<?> putPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
+    private ResponseEntity<?> putPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
         return ResponseEntity.ok(perspectivaService.putPerspectiva(perspectiva));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PerspectivaDTO postPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
+    private PerspectivaDTO postPerspectiva(@Valid @RequestBody Perspectiva perspectiva){
         return perspectivaService.postPerspectiva(perspectiva);
     }
     

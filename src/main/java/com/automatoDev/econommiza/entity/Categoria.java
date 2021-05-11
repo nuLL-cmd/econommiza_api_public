@@ -4,15 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 import com.automatoDev.econommiza.enumerator.CategoriaEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.automatoDev.econommiza.entity.validationGroups.ConverterGroup;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -35,12 +37,15 @@ import lombok.ToString;
  @EqualsAndHashCode(exclude = {"nome","descricao","dtCriacao"})
  @Entity(name = "tb_categoria")
  @Table(schema = "dbo")
-public class Categoria {
+public class Categoria implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
+    @NotNull(groups = ConverterGroup.Categoria.class)
     private Long idCategoria;
 
     @Enumerated(EnumType.STRING)
