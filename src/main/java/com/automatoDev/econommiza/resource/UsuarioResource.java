@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiOperation;
+
 /**
  * @author Marco Aurelio.
  * @date 04/05/2021
@@ -33,35 +35,41 @@ public class UsuarioResource {
     @Autowired
     private UsuarioService usuarioService;
 
-
-    @GetMapping
+    @ApiOperation(value = "Recurso destinado a adminstradores, que traz todos os usuários da base.")
+    @GetMapping(produces = "application/json")
     private ResponseEntity<?> fetchAll(){
         
         return ResponseEntity.ok(usuarioService.fetchAll());
     }
 
-    @GetMapping("{id}")
+    @ApiOperation(value = "Recurso responsavel por trazer um usuari com base no seu id.")
+    @GetMapping(value = "{id}",produces = "application/json")
     private ResponseEntity<?> fetchById(@PathVariable("id") Long id){
         return ResponseEntity.ok(usuarioService.fetchById(id));
     }
-    @GetMapping("{uid}/uid")
+
+    @ApiOperation(value = "Recurso responsavel por trazer uma perspectiva com base no seu uid.")
+    @GetMapping(value = "{uid}/uid",produces = "application/json")
     private ResponseEntity<?> fetchByUid(@PathVariable("uid") String uid){
         return ResponseEntity.ok(usuarioService.fetchByUid(uid));
     }
 
 
-    @PostMapping
+    @PostMapping(produces = "application/json", consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Grava um novo usuário na base.")
     private UsuarioPerfilDTO postUsuario(@Valid @RequestBody Usuario usuario){
         return usuarioService.postUsuario(usuario);
     }
 
-    @PutMapping
+    @ApiOperation(value = "Atualiza um usuário existente na base de dados.")
+    @PutMapping(produces = "application/json", consumes = "application/json")
     private ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario){
         return ResponseEntity.ok(usuarioService.putUsuario(usuario));
     }
 
-    @DeleteMapping("{id}")
+    @ApiOperation(value = "Recurso que deleta o usuário todos os seus dados do banco.")
+    @DeleteMapping(value = "{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private void deleteUsuario(@PathVariable("id") Long id){
         usuarioService.deleteUsuario(id);
