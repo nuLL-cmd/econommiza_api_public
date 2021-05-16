@@ -1,5 +1,8 @@
 package com.automatoDev.econommiza.resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import com.automatoDev.econommiza.dto.UsuarioPerfilDTO;
@@ -73,6 +76,14 @@ public class UsuarioResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     private void deleteUsuario(@PathVariable("id") Long id){
         usuarioService.deleteUsuario(id);
+    }
+
+    @GetMapping(value = "/testing",produces = "application/json")
+    public Map<String, Object> testing(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("Teste", "Hello World");
+
+        return map;
     }
 
 }
