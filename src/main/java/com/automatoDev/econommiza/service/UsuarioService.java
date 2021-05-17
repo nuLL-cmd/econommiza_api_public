@@ -97,7 +97,7 @@ public class UsuarioService {
 
     public Usuario putUsuario(Usuario usuario){
 
-        if(usuario.getIdUsuario() != null || usuario.getIdUsuario() >= 0 ){
+        if(usuario.getIdUsuario() != null || usuario.getIdUsuario() > 0 ){
             if(usuarioRepo.existsById(usuario.getIdUsuario())){
                 usuario.setNome(usuario.getNome().toUpperCase());
                 usuario.setSobrenome(usuario.getSobrenome().toUpperCase());
