@@ -97,14 +97,46 @@ public class UsuarioService {
 
     public Usuario putUsuario(Usuario usuario){
 
-        if(usuario.getIdUsuario() != null || usuario.getIdUsuario() > 0 ){
-            if(usuarioRepo.existsById(usuario.getIdUsuario())){
-                usuario.setNome(usuario.getNome().toUpperCase());
-                usuario.setSobrenome(usuario.getSobrenome().toUpperCase());
-                return usuarioRepo.save(usuario);
+        if((usuario.getIdUsuario() != null) && (usuario.getIdUsuario() > 0)){
+            Usuario usuarioPesquisa = usuarioRepo.findById(usuario.getIdUsuario()).orElseThrow(() ->
+                new NegocioException("Usuario não encontrado na base de dados.", HttpStatus.NOT_FOUND));
+            
+            if(usuario.getPerfis().size() == 0){
+                usuario.setPerfis(usuarioPesquisa.getPerfis());
+            }else{
+
+                List<Perfil> perfis = new ArrayList<>();
+                for(Perfil p: usuario.getPerfis()){
+                    if(p.getIdPerfil() == null){
+                        perfis.add(p);
+                    }
+                }
+
+                usuario.getPerfis().removeAll(perfis);
+                perfis.clear();
+                
+                int count = 0;
+
+                for(Perfil p: usuario.getPerfis()){
+                    Perfil perfil = perfilRepo.findById(p.getIdPerfil()).orElse(null);
+                    if(perfil != null){
+                        perfis.add(perfil);
+                        if(perfil.getPerfil() != PerfilEnum.USER)
+                            count++;
+                    } 
+                }
+    
+                if(count == perfis.size()){
+                   perfis.add(new Perfil(2L, PerfilEnum.USER));
+                }
+
+                usuario.setPerfis(perfis);
+            
             }
 
-            throw new NegocioException("Usuario não encontrado na base de dados.", HttpStatus.NOT_FOUND);
+            usuario.setNome(usuario.getNome().toUpperCase());
+            usuario.setSobrenome(usuario.getSobrenome().toUpperCase());
+            return usuarioRepo.save(usuario);
            
         }
 
