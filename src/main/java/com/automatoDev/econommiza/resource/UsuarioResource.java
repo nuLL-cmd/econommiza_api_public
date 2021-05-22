@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import com.automatoDev.econommiza.dto.UsuarioPerfilDTO;
 import com.automatoDev.econommiza.entity.Usuario;
-import com.automatoDev.econommiza.exception.NegocioException;
 import com.automatoDev.econommiza.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;

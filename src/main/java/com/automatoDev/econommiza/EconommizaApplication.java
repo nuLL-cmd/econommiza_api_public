@@ -10,4 +10,5 @@ public class EconommizaApplication {
 		SpringApplication.run(EconommizaApplication.class, args);
 	}
 
+
 }
