@@ -66,18 +66,16 @@ public class UsuarioService {
 
             usuario.getPerfis().removeAll(perfis);
             perfis.clear();
-            int count = 0;
-
-            for(Perfil p: usuario.getPerfis()){
+            
+            usuario.getPerfis().forEach(p ->{
                 Perfil perfil = perfilRepo.findById(p.getIdPerfil()).orElse(null);
-                if(perfil != null){
+                if(perfil != null)
                     perfis.add(perfil);
-                    if(perfil.getPerfil() != PerfilEnum.USER)
-                        count++;
-                } 
-            }
+            }); 
+          
+            Perfil perfilUser = perfis.stream().filter(p -> p.getPerfil().equals(PerfilEnum.USER)).findFirst().orElse(null);
 
-            if(count == perfis.size()){
+            if(perfilUser == null){
                perfis.add(new Perfil(2L, PerfilEnum.USER));
             }
 
@@ -115,18 +113,15 @@ public class UsuarioService {
                 usuario.getPerfis().removeAll(perfis);
                 perfis.clear();
                 
-                int count = 0;
-
-                for(Perfil p: usuario.getPerfis()){
+                usuario.getPerfis().forEach(p ->{
                     Perfil perfil = perfilRepo.findById(p.getIdPerfil()).orElse(null);
-                    if(perfil != null){
+                    if(perfil != null)
                         perfis.add(perfil);
-                        if(perfil.getPerfil() != PerfilEnum.USER)
-                            count++;
-                    } 
-                }
+                }); 
+              
+                Perfil perfilUser = perfis.stream().filter(p -> p.getPerfil().equals(PerfilEnum.USER)).findFirst().orElse(null);
     
-                if(count == perfis.size()){
+                if(perfilUser == null){
                    perfis.add(new Perfil(2L, PerfilEnum.USER));
                 }
 
