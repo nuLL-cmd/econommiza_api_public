@@ -1,6 +1,6 @@
 # econommiza_api
 
-A simple api project for econommiza app mobile using model SQL - Pratice
+A simple api project for econommiza app mobile using model SQL
 
 
 This project was developed using the following technologies:
